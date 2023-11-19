@@ -6,4 +6,5 @@ REM python.exe -m nuitka --onefile --follow-imports --output-dir=..\output --sho
 python.exe -m nuitka --standalone --follow-imports --output-dir=..\output --show-progress --include-module=build_as --include-module=build_seg --remove-output build.py
 python.exe -m nuitka --standalone --follow-imports --output-dir=..\output --show-progress --remove-output build_as.py
 python.exe -m nuitka --standalone --follow-imports --output-dir=..\output --show-progress --remove-output build_seg.py
+python.exe -m nuitka --standalone --follow-imports --output-dir=..\output --show-progress --remove-output build_vlab.py
 cd ..\output
