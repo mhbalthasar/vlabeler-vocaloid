@@ -1,0 +1,143 @@
+{
+  "name": "vocaloid-labeler",
+  "version": 5,
+  "serialVersion": 2,
+  "singleFile": false,
+  "extension": "",
+  "defaultInputFilePath": null,
+  "displayedName": {
+    "en": "Vocaloid labeler",
+    "zh": "Vocaloid 标注器",
+    "ja": "Vocaloid ラベラー"
+  },
+  "author": "balthasar",
+  "email": "scskarsper@gmail.com",
+  "description": {
+    "en": "Labeler for Vocaloid (test). This labeler will be able to handle multiple trans files, each trans file corresponds to a wav file. Please create a wav folder under the project path and place the trans files and wav files in it. After completing the annotation, use the py scripts build_seg.py and build_as.py to execute the transformer program with the wav folder path as the parameter to convert the annotation to a segmented file recognized by DBTool.",
+    "zh": "Vocaloid 的标注器(测试性）。该标注器将可以处理多个 Trans 文件，每个 Trans 文件对应一个 wav 文件。请在工程路径下面创建wav文件夹，并且放置trans文件和wav文件在里面。完成标注后，使用py脚本build_seg.py和build_as.py，以wav文件夹路径为参数执行转换程序，将标注转换为DBTool可识别的分割文件。",
+    "ja": "ボーカロイド用アノテーター（テスト）。 アノテーターは複数のトランスファイル、各トランスファイルに対して1つのwavファイルを扱うことができます。 プロジェクトパスの下にwavフォルダを作成し、そこにトランスファイルとwavファイルを置いてください。 アノテーションが完成したら、build_seg.pyとbuild_as.pyスクリプトを使って、wavフォルダのパスをパラメータとしてトランスフォーマーを実行し、アノテーションをDBToolで認識できるセグメントファイルに変換します。"
+  },
+  "website": "https://github.com/mhbalthasar/vlabeler-vocaloid",
+  "continuous": true,
+  "allowSameNameEntry": true,
+  "defaultValues": [
+    100,
+    200,
+    300,
+    400,
+    500
+  ],
+  "fields": [{
+    "name":"ph1",
+    "label":{"en":"ph1","zh":"ph1","ja":"ph1"},
+    "height": 0.8,
+    "filling":"left","color": "#ff0000",
+    "constraints":[{"min":null,"max":1}],
+    "shortcutIndex":1
+  },{
+    "name":"ph2",
+    "label":{"en":"ph2","zh":"ph2","ja":"ph2"},
+    "height": 0.8,
+    "filling":"left","color": "#00ff00",
+    "constraints":[{"min":0,"max":2}],
+    "shortcutIndex":2
+  },{
+    "name":"ed",
+    "label":{"en":"ed","zh":"ed","ja":"ed"},
+    "height": 0.8,
+    "filling":"left","color": "#0000ff",
+    "constraints":[{"min":1,"max":null}],
+    "shortcutIndex":3
+  }],
+  "extraFields": [],
+  "lockedDrag": {
+    "useDragBase": false,
+    "useStart": false
+  },
+  "decimalDigit": 6,
+  "properties": [
+    {
+      "name": "start",
+      "displayedName": "start",
+      "valueGetter": [
+        "value = entry.start"
+      ],
+      "valueSetter": [
+        "entry.start = value"
+      ],
+      "shortcutIndex": 0
+    },
+    {
+      "name": "phoneme1",
+      "displayedName": "Phoneme1",
+      "valueGetter": [
+        "value = entry.points[0]"
+      ],
+      "valueSetter": [
+        "entry.point[0] = value"
+      ],
+      "shortcutIndex": 1
+    },
+    {
+      "name": "phoneme2",
+      "displayedName": "Phoneme2",
+      "valueGetter": [
+        "value = entry.points[1]"
+      ],
+      "valueSetter": [
+        "entry.point[1] = value"
+      ],
+      "shortcutIndex": 2
+    },
+    {
+      "name": "phoneme3",
+      "displayedName": "Phoneme3",
+      "valueGetter": [
+        "value = entry.points[2]"
+      ],
+      "valueSetter": [
+        "entry.point[2] = value"
+      ],
+      "shortcutIndex": 3
+    },
+    {
+      "name": "end",
+      "displayedName": "end",
+      "valueGetter": [
+        "value = entry.end"
+      ],
+      "valueSetter": [
+        "entry.end = value"
+      ],
+      "shortcutIndex": 4
+    }
+  ],
+  "parser": {
+    "scope": "Entry",
+    "defaultEncoding": "UTF-8",
+    "extractionPattern": "(.*)|(.*)|(.*)|(.*)|(.*)|(.*)",
+    "variableNames": ["sample","start","ph1","ph2","ed","end"],
+    "scripts": "parser.js"
+  },
+  "writer": {
+    "scope": "Entry",
+    "format": "{sample}|{start}|{ph1}|{ph2}|{ed}|{end}"
+  },
+  "parameters": [
+    {
+      "parameter": {
+        "name": "wavFolderName",
+        "type": "string",
+        "label": {
+          "en": "wav folder name",
+          "zh": "wav 文件夹名称",
+          "ja": "wav フォルダ名"
+        },
+        "defaultValue": "wav"
+      }
+    }
+  ],
+  "projectConstructor": {
+    "scripts": "projectConstructor.js"
+  }
+}
