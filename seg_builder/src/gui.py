@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.filedialog
 import sys
 import os
+import traceback
 import tkinter.messagebox as msgbox
 
 from build_as import main as as_main
@@ -25,7 +26,10 @@ def event_vlab_to_seg():
 
 def event_vlab_to_all():
     val=wavText.get()
-    seg_main([val])
+    try:
+        seg_main([val])
+    except:
+        traceback.print_exc()
     as_main([val])
     msgbox.showinfo(title="Done",message="execute vlab to seg/as transform done!")
     pass

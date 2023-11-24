@@ -3,13 +3,14 @@
 import os
 import sys
 import wave
+import traceback
 
 CHN_STA=["a","o","7","aI","ei","@`","AU","@U","a_n","@_n","AN","@N","i\\","i`","i","ia","iE_r","iAU","i@U","iE_n","i_n","iAN","iN","iUN","u","ua","uo","uaI","uei","ua_n","u@_n","uAN","UN","u@N","y","yE_r","y{_n","y_n"]
 JPN_STA=["a","i","M","e","o"]
 ENG_STA=["I","e","{","Q","V","U","@","i:","u:","O:","@r","eI","aI","OI","@U","aU","I@","e@","U@","O@","Q@","@l","e@0"]
 EXT_STA=[]
 
-PIN_LENGTH=20
+PIN_LENGTH=-1#20
 
 DefObj=[100,200,300,400,500]  #default Value define in labeler.json, sign the data is None
 def isDefaultObj(obj):
@@ -27,9 +28,10 @@ def read_file(file_path):
     ret=[]
     with open(file_path,"rt") as f:
         for l in f.readlines():
-            if l.endswith("\n"):
-                ret.append(l[:-1])
-            else:
+            while(l.endswith("\n") or l.endswith("\r")):
+                l=l[:-1]
+            l=l.strip()
+            if(len(l)>0):
                 ret.append(l)
     return ret
 
@@ -105,7 +107,10 @@ def trans_to_as(trans_file,wav_dir):
             continue
         sgl=sgl[1:sgl.index("]")].split(" ")
         as_file=base_file+".as{}".format(vindex)
-        build_as(vlab,sgl,as_file,wav_file)
+        try:
+            build_as(vlab,sgl,as_file,wav_file)
+        except:
+            traceback.print_exc()
 
 
 def get_cutdown(vlab,wav_file):

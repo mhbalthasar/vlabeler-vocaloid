@@ -9,7 +9,7 @@ def main(argv):
         print("build.py [wav_folder]")
         print("Enhanced settings:")
         print("\tcommand:\tbuild.py [wav_folder] [pin_length]")
-        print("\tintroduce:\tpin_length\tdefault: 20, pin_length is a value in milliseconds. When the distance between two rows between the previous marker's ed and the current marker's ph1 is less than this value, ph1 is adjusted to merge into one row at ed's position. Similarly, when two marker regions overlap, the same operation is done to avoid pronunciation faults. This feature is turned off if pin_length is negative.")
+        print("\tintroduce:\tpin_length\tdefault: -1, pin_length is a value in milliseconds. When the distance between two rows between the previous marker's ed and the current marker's ph1 is less than this value, ph1 is adjusted to merge into one row at ed's position. Similarly, when two marker regions overlap, the same operation is done to avoid pronunciation faults. This feature is turned off if pin_length is negative.")
         return
     seg_main(argv)
     as_main(argv)

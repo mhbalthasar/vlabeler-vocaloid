@@ -13,9 +13,10 @@ def read_file(file_path):
     ret=[]
     with open(file_path,"rt") as f:
         for l in f.readlines():
-            if l.endswith("\n"):
-                ret.append(l[:-1])
-            else:
+            while(l.endswith("\n") or l.endswith("\r")):
+                l=l[:-1]
+            l=l.strip()
+            if(len(l)>0):
                 ret.append(l)
     return ret
 
