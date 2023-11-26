@@ -90,7 +90,16 @@ def readVLabel(sgi,trans_file,is_innerFunc=False):
         sgo=readVLabel(sgi-1,trans_file,is_innerFunc=True)
         obj=pinVLabel(sgo,obj)
     return obj
-        
+
+def unix2doslf(tmp):
+    ret=[]
+    for i in range(0,len(tmp)):
+        l=tmp[i]
+        while(l.endswith("\n") or l.endswith("\r")):
+            l=l[:-1]
+        ret.append(l+"\r\n")
+    return ret
+
 def get_wav_len(wav_file):
     wave_file = wave.open(wav_file,'rb')
     wav_len = float(wave_file.getnframes()) / float(wave_file.getframerate())
@@ -228,9 +237,9 @@ def build_seg(sign,time,seg_file,is_sta=False):
     lines.insert(1,"articulationsAreStationaries = {}\n".format("1" if is_sta else "0"))
     lines.insert(2,"phoneme\t\tBeginTime\t\tEndTime\n")
     lines.insert(3,"===================================================\n")
-    with open(seg_file,"wt") as f:
+    with open(seg_file,"wt",newline="\n") as f:
         print("building seg file:",seg_file)
-        f.writelines(lines)
+        f.writelines(unix2doslf(lines))
 
 def read_and_build_seg(wav_dir):
     trans_files=get_trans(wav_dir)

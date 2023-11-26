@@ -112,6 +112,14 @@ def trans_to_as(trans_file,wav_dir):
         except:
             traceback.print_exc()
 
+def unix2doslf(tmp):
+    ret=[]
+    for i in range(0,len(tmp)):
+        l=tmp[i]
+        while(l.endswith("\n") or l.endswith("\r")):
+            l=l[:-1]
+        ret.append(l+"\r\n")
+    return ret
 
 def get_cutdown(vlab,wav_file):
     wave_file = wave.open(wav_file,'rb')
@@ -140,9 +148,9 @@ def build_as_sta(vlab,phn_sign,as_file,wav_file):
     lines.append("\trevised: false;\n")
     lines.append("\tvoiced: [true];\n")
     lines.append("};\n")
-    with open(as_file,"wt") as f:
+    with open(as_file,"wt",newline="\n") as f:
         print("building as file:",as_file)
-        f.writelines(lines)
+        f.writelines(unix2doslf(lines))
 
 def build_as(vlab,phn_sign,as_file,wav_file):
     if(len(phn_sign)==1 and phn_sign[0] in CHN_STA+JPN_STA+ENG_STA):
@@ -168,9 +176,9 @@ def build_as(vlab,phn_sign,as_file,wav_file):
     lines.append("\trevised: false;\n")
     lines.append("\tvoiced: [{}];\n".format(",".join(voiced)))
     lines.append("};\n")
-    with open(as_file,"wt") as f:
+    with open(as_file,"wt",newline="\n") as f:
         print("building as file:",as_file)
-        f.writelines(lines)
+        f.writelines(unix2doslf(lines))
 
 def read_and_build_as(wav_dir):
     trans_files=get_trans(wav_dir)
