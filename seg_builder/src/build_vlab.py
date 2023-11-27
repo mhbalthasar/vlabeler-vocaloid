@@ -70,6 +70,32 @@ def readAS(sgi,trans_file):
             for vb in cvalue.split(','):
                 vbound.append(float(vb.strip()))
     vData=[]
+    if(len(vbound)==5):
+        #ThirdPhone
+        try:
+            cdown[1]=(cdown[1]+cdown[0])*1000.0
+            vbound[0]=(vbound[0]+cdown[0])*1000.0
+            vbound[1]=(vbound[1]+cdown[0])*1000.0
+            vbound[2]=(vbound[2]+cdown[0])*1000.0
+            vbound[3]=(vbound[3]+cdown[0])*1000.0
+            vbound[4]=(vbound[4]+cdown[0])*1000.0
+            cdown[0]=cdown[0]*1000.0
+            vData=[wavName]+[cdown[0]]+vbound[0:5]+[cdown[1]]
+        except:
+            return None
+        if(len(vData)<6):return None
+        obj={
+            "wav_file":vData[0],
+            "cutBegin":vData[1],
+            "ph1":vData[2],
+            "ph2":vData[3],
+            "ph2.2":vData[4],
+            "ph3":vData[5],
+            "ed":vData[6],
+            "cutEnd":vData[7]
+        }
+        return obj
+    #DiPhone
     try:
         if(len(vbound)==2):
             vbound.insert(1,(vbound[0]+vbound[1])/2)
@@ -100,15 +126,35 @@ def trans_to_vlab(trans_file,wav_dir):
     for vindex in range(0,len(tf)):
         vlab=readAS(vindex,trans_file)
         if(vlab==None):continue
-        vlab_file="{}.vlab{}".format(base_file,vindex)
-        content="{}|{:.6f}|{:.6f}|{:.6f}|{:.6f}|{:.6f}".format(
-            vlab["wav_file"],vlab["cutBegin"],
-            vlab["ph1"],vlab["ph2"],vlab["ed"],
-            vlab["cutEnd"]
-        )
-        with open(vlab_file,"wt") as f:
-            print("building vlab file:",vlab_file)
-            f.write(content)
+        if not vlab.get("ph3",None)==None:
+            vlab_file1="{}.vlab{}_1".format(base_file,vindex)
+            vlab_file2="{}.vlab{}_2".format(base_file,vindex)
+            content1="{}|{:.6f}|{:.6f}|{:.6f}|{:.6f}|{:.6f}".format(
+                vlab["wav_file"],vlab["cutBegin"],
+                vlab["ph1"],vlab["ph2"],vlab["ph3"],
+                vlab["cutEnd"]
+            )
+            content2="{}|{:.6f}|{:.6f}|{:.6f}|{:.6f}|{:.6f}".format(
+                vlab["wav_file"],vlab["cutBegin"],
+                vlab["ph2.2"],vlab["ph3"],vlab["ed"],
+                vlab["cutEnd"]
+            )
+            with open(vlab_file1,"wt") as f:
+                print("building vlab file:",vlab_file1)
+                f.write(content1)
+            with open(vlab_file2,"wt") as f:
+                print("building vlab file:",vlab_file2)
+                f.write(content2)
+        else:
+            vlab_file="{}.vlab{}".format(base_file,vindex)
+            content="{}|{:.6f}|{:.6f}|{:.6f}|{:.6f}|{:.6f}".format(
+                vlab["wav_file"],vlab["cutBegin"],
+                vlab["ph1"],vlab["ph2"],vlab["ed"],
+                vlab["cutEnd"]
+            )
+            with open(vlab_file,"wt") as f:
+                print("building vlab file:",vlab_file)
+                f.write(content)
 
 
 def read_and_build_vlab(wav_dir):

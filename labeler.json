@@ -1,6 +1,6 @@
 {
   "name": "vocaloid-labeler",
-  "version": 5,
+  "version": 6,
   "serialVersion": 2,
   "singleFile": false,
   "extension": "",
@@ -14,7 +14,7 @@
   "email": "scskarsper@gmail.com",
   "description": {
     "en": "Labeler for Vocaloid (test). This labeler will be able to handle multiple trans files, each trans file corresponds to a wav file. Please create a wav folder under the project path and place the trans files and wav files in it. After completing the annotation, use the py scripts build_seg.py and build_as.py to execute the transformer program with the wav folder path as the parameter to convert the annotation to a segmented file recognized by DBTool.",
-    "zh": "Vocaloid 的标注器(测试性）。该标注器将可以处理多个 Trans 文件，每个 Trans 文件对应一个 wav 文件。请在工程路径下面创建wav文件夹，并且放置trans文件和wav文件在里面。完成标注后，使用py脚本build_seg.py和build_as.py，以wav文件夹路径为参数执行转换程序，将标注转换为DBTool可识别的分割文件。",
+    "zh": "Vocaloid 的标注器(测试性）。该标注器将可以处理多个 Trans 文件，每个 Trans 文件对应一个 wav 文件。请在工程路径下面创建wav文件夹，并且放置trans文件和wav文件在里面。完成标注后，使用py脚本build_seg.py和build_as.py，以wav文件夹路径为参数执行转换程序，将标注转换为DBTool可识别的分割文件。标注默认每个单元是一个diphone音素，如果标记thirdphone音素，音素将被拆分成2个段落，段落1的start,ph1,ph2和段落2的ph1,ph2,ed,end将分别对应thirdphone的:start,ph1,ph2.1,ph2.2,ph3,ed,end。请知悉。",
     "ja": "ボーカロイド用アノテーター（テスト）。 アノテーターは複数のトランスファイル、各トランスファイルに対して1つのwavファイルを扱うことができます。 プロジェクトパスの下にwavフォルダを作成し、そこにトランスファイルとwavファイルを置いてください。 アノテーションが完成したら、build_seg.pyとbuild_as.pyスクリプトを使って、wavフォルダのパスをパラメータとしてトランスフォーマーを実行し、アノテーションをDBToolで認識できるセグメントファイルに変換します。"
   },
   "website": "https://github.com/mhbalthasar/vlabeler-vocaloid",

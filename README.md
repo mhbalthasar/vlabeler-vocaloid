@@ -11,3 +11,19 @@ labeler base on vlabeler https://github.com/sdercolin/vlabeler
 请注意标注过程中的区间问题，不要做过长的标注。
 
 ![e00bcea1c13688dabfd27290e16a2427](https://github.com/mhbalthasar/vlabeler-vocaloid/assets/98707331/2c1a1f43-33c7-4981-8951-507c4456da63)
+
+
+# change log
+v6:
+增加了thirdphontic的支持。由于thirdphontic需要7条线。phoneme2是同音素过渡段，因此在标记过程中thirdphontic被拆成了两个标记组。例如：音素[a b c]，会被拆分为[(a b) c]和[a (b c)]两个标记对象。
+标记对象[(a b) c]的start，ph1，ph2 线 和 标记对象 [a (b c)] 的 ph1，ph2，ed，end线 会在transfrom的过程中被分别标记为thirdphontic的start，ph1，ph2.1，ph2.2，ph3，ed，end线。
+
+|三音素标记线|标记名|标记线|
+|------|--------------|------|
+|start|[(a b) c]|start|
+|phoneme1|[(a b) c]|ph1|
+|phoneme2.1|[(a b) c]|ph2|
+|phoneme2.2|[a (b c)]|ph1|
+|phoneme3|[a (b c)]|ph2|
+|ed|[a (b c)]|ed|
+|end|[a (b c)]|end|

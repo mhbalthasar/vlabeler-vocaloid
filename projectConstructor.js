@@ -30,20 +30,56 @@ wavFiles.forEach(wavFile => {
         
         for (let tier of tiers) {
             let moduleName = wavFile.getName() + " ["+tier.name + '] _' + tier.index
-            let sampleNames=[]
-            let asNames=[]
-            let asFileName = wavFolder.resolve(wavName + '.vlab' + tier.index)
-            let sampleName = wavFile.getName()
-            sampleNames.push(sampleName)
-            asNames.push(asFileName.getAbsolutePath())
-            let module = new ModuleDefinition(
-                moduleName,//Name
-                wavFolder.getAbsolutePath(),//SampleDirPath
-                sampleNames,//SampleFileNames
-                asNames,//inputFilePathesvLabelFile.getAbsolutePath()
-                asFileName.getAbsolutePath()//labelFilePathes
-            )
-            modules.push(module)
+            let len_phn=tier.name.split(' ').length;
+            let sampleNames=[];
+            let asNames=[];
+            console.log(moduleName);
+            if(len_phn==3)
+            {
+                let prt1=tier.name.split(' ')[0]+' '+tier.name.split(' ')[1];
+                let prt2=tier.name.split(' ')[1]+' '+tier.name.split(' ')[2];
+
+                moduleName = wavFile.getName() + " [(" + prt1 + ')] ' + tier.name.split(' ')[2]+ '] _' + tier.index
+                let asFileName = wavFolder.resolve(wavName + '.vlab' + tier.index+"_1")
+                let sampleName = wavFile.getName()
+                sampleNames=[sampleName];
+                asNames=[asFileName.getAbsolutePath()];
+                let module = new ModuleDefinition(
+                    moduleName,//Name
+                    wavFolder.getAbsolutePath(),//SampleDirPath
+                    sampleNames,//SampleFileNames
+                    asNames,//inputFilePathesvLabelFile.getAbsolutePath()
+                    asFileName.getAbsolutePath()//labelFilePathes
+                )
+                modules.push(module)
+                
+                moduleName = wavFile.getName() + " ["  + tier.name.split(' ')[0] + " (" + prt2 + ')] _' + tier.index
+                asFileName = wavFolder.resolve(wavName + '.vlab' + tier.index+"_2")
+                sampleNames=[sampleName];
+                asNames=[asFileName.getAbsolutePath()];
+                module = new ModuleDefinition(
+                    moduleName,//Name
+                    wavFolder.getAbsolutePath(),//SampleDirPath
+                    sampleNames,//SampleFileNames
+                    asNames,//inputFilePathesvLabelFile.getAbsolutePath()
+                    asFileName.getAbsolutePath()//labelFilePathes
+                )
+                modules.push(module)
+            }else
+            {
+                let asFileName = wavFolder.resolve(wavName + '.vlab' + tier.index)
+                let sampleName = wavFile.getName()
+                sampleNames=[sampleName];
+                asNames=[asFileName.getAbsolutePath()];
+                let module = new ModuleDefinition(
+                    moduleName,//Name
+                    wavFolder.getAbsolutePath(),//SampleDirPath
+                    sampleNames,//SampleFileNames
+                    asNames,//inputFilePathesvLabelFile.getAbsolutePath()
+                    asFileName.getAbsolutePath()//labelFilePathes
+                )
+                modules.push(module)
+            }
         }
     }
 })

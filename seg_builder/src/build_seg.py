@@ -67,12 +67,51 @@ def pinVLabel(sgo,obj):
         obj["ph1"]=sgo["ed"]
     return obj
 
+def readThirdVLabel(sgi,trans_file,is_innerFunc=False):
+    sFile,_=os.path.splitext(trans_file)
+    rFile1="{}.vlab{}_1".format(sFile,sgi)
+    rFile2="{}.vlab{}_2".format(sFile,sgi)
+    if(not os.path.exists(rFile1)):
+        return None 
+    if(not os.path.exists(rFile2)):
+        return None 
+    with open(rFile1,"rt") as f:
+        vData1=f.readline().split('|')
+    if len(vData1)<6:
+        return None
+    with open(rFile2,"rt") as f:
+        vData2=f.readline().split('|')
+    if len(vData2)<6:
+        return None
+    #zuan_zuan_zuan.wav|100.0|200.0|300.0|400.0|500.0
+    if isDefaultObj(vData1[1:]) : return None
+    if isDefaultObj(vData2[1:]) : return None
+    if vData1[0]!=vData2[0]:return None
+    obj={
+        "wav_file":vData1[0],
+        "cutBegin":vData1[1],
+        "ph1":vData1[2],
+        "ph2":vData1[3],
+        "ph2.2":vData2[2],
+        "ph3":vData2[3],
+        "ed":vData2[4],
+        "cutEnd":vData2[5]
+    }
+    if float(obj["ph2.2"])<float(obj["ph2"]):obj["ph2.2"]=obj["ph2"]
+    if float(obj["ph3"])<float(obj["ph2.2"]):obj["ph3"]=obj["ph2.2"]
+    if float(obj["ed"])<float(obj["ph3"]):obj["ed"]=obj["ph3"]
+    if float(obj["cutEnd"])<float(obj["ed"]):obj["cutEnd"]=obj["ed"]
+    if PIN_LENGTH>=0 and sgi>0 and not is_innerFunc:
+        sgo=readVLabel(sgi-1,trans_file,is_innerFunc=True)
+        obj=pinVLabel(sgo,obj)
+    return obj
+
 def readVLabel(sgi,trans_file,is_innerFunc=False):
     sFile,_=os.path.splitext(trans_file)
     rFile="{}.vlab{}".format(sFile,sgi)
     vData=[]
     if(not os.path.exists(rFile)):
-        return None
+        return readThirdVLabel(sgi,trans_file,is_innerFunc=False) 
     with open(rFile,"rt") as f:
         vData=f.readline().split('|')
     if len(vData)<6:
@@ -171,8 +210,14 @@ def trans_to_seg(trans_file,wav_dir):
                     retT[fnd+1]=float(vLab["ph2"])
                     if retT[fnd]==0:
                         retT[fnd]=float(vLab["ph1"])
-                    if fnd+2<len(retT) and retT[fnd+2]==0:
-                        retT[fnd+2]=float(vLab["ed"])
+                    if vLab.get("ph3",None)==None:
+                        if fnd+2<len(retT) and retT[fnd+2]==0:
+                            retT[fnd+2]=float(vLab["ed"])
+                    else:
+                        if fnd+2<len(retT) and retT[fnd+2]==0:
+                            retT[fnd+2]=float(vLab["ph3"])
+                        if fnd+3<len(retT) and retT[fnd+3]==0:
+                            retT[fnd+3]=float(vLab["ed"])
 
     if not check_is_zero(retT):
         #HAVE VALUE
